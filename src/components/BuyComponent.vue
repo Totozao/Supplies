@@ -44,22 +44,36 @@
             <span class="text-h5">Add Buy Phone/Tablet</span>
           </v-card-title>
           <v-card-text>
-            <v-combobox
-              v-model="buyPhoneTablet.brand"
-              :items="brandOptions"
-              label="Brand"
-              clearable
-            ></v-combobox>
-            <v-combobox
-              v-model="buyPhoneTablet.model"
-              :items="modelOptions"
-              label="Model"
-              clearable
-            ></v-combobox>
-            <v-text-field v-model="buyPhoneTablet.memory" label="Memory"></v-text-field>
-            <v-text-field v-model="buyPhoneTablet.ram" label="RAM"></v-text-field>
+            <v-row>
+              <v-col cols="12" sm="6" md="4" lg="6">
+                <v-combobox
+                  label="Brand"
+                  v-model="buyPhoneTablet.brand"
+                  :items="brandOptions"
+                  required
+                ></v-combobox>
+              </v-col>
+              <v-col cols="12" sm="6" md="4" lg="6">
+                <v-combobox
+                  label="Model"
+                  v-model="buyPhoneTablet.model"
+                  :items="modelOptions"
+                  required
+                ></v-combobox>
+              </v-col>
+              <v-col cols="12" sm="6" md="4" lg="6">
+                <v-text-field v-model="buyPhoneTablet.memory" label="Memory"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4" lg="6">
+                <v-text-field v-model="buyPhoneTablet.ram" label="RAM"></v-text-field>
+              </v-col>
+            </v-row>
             <v-text-field v-model="buyPhoneTablet.color" label="Color"></v-text-field>
-            <v-text-field v-model="buyPhoneTablet.cost" label="Cost"></v-text-field>
+            <v-text-field 
+              v-model="buyPhoneTablet.cost" 
+              label="Cost"
+              suffix="RUB"
+            ></v-text-field>
             <v-text-field v-model="buyPhoneTablet.quantity" label="Quantity"></v-text-field>
           </v-card-text>
           <v-card-actions>
@@ -77,8 +91,24 @@
           </v-card-title>
           <v-card-text>
             <v-select v-model="buyAccessory.category" :items="['Cable', 'Adapter', 'Memory Card', 'Headphones']" label="Category"></v-select>
-            <v-text-field v-model="buyAccessory.brand" label="Brand"></v-text-field>
-            <v-text-field v-model="buyAccessory.model" label="Model"></v-text-field>
+            <v-row>
+              <v-col cols="12" sm="6" md="4" lg="6">
+                <v-combobox
+                  label="Brand"
+                  v-model="buyAccessory.brand"
+                  :items="accessoryBrandOptions"
+                  required
+                ></v-combobox>
+              </v-col>
+              <v-col cols="12" sm="6" md="4" lg="6">
+                <v-combobox
+                  label="Model"
+                  v-model="buyAccessory.model"
+                  :items="accessoryModelOptions"
+                  required
+                ></v-combobox>
+              </v-col>
+            </v-row>
             <v-text-field v-model="buyAccessory.cost" label="Cost"></v-text-field>
             <v-text-field v-model="buyAccessory.quantity" label="Quantity"></v-text-field>
           </v-card-text>
@@ -108,14 +138,14 @@ export default {
         ram: '',
         color: '',
         cost: '',
-        quantity: '',
+        quantity: '1',
       },
       buyAccessory: {
         category: '',
         brand: '',
         model: '',
         cost: '',
-        quantity: '',
+        quantity: '1',
       },
       buyPhoneTabletHeaders: [
         { title: 'Brand', value: 'brand' },
@@ -139,15 +169,14 @@ export default {
         { title: 'Actions', value: 'actions', sortable: false },
       ],
       buyAccessoryItems: [],
+      accessoryBrandOptions: [],
+      accessoryModelOptions: [],
+      brandOptions: [],
+      modelOptions: [],
     };
   },
-  computed: {
-    brandOptions() {
-      return [...new Set(this.buyPhoneTabletItems.map(item => item.brand))];
-    },
-    modelOptions() {
-      return [...new Set(this.buyPhoneTabletItems.map(item => item.model))];
-    },
+  created() {
+    this.fetchBrandAndModelOptions();
   },
   methods: {
     openBuyPhoneTabletDialog() {
@@ -257,6 +286,83 @@ export default {
         cost: '',
         quantity: '',
       };
+    },
+    async fetchBrandAndModelOptions() {
+      const db = getFirestore();
+      const phonesAndTabletsCollection = collection(db, 'PhonesAndTablets');
+      const accessoriesCollection = collection(db, 'Accessories');
+
+      try {
+        const brandOptions = new Set();
+        const modelOptions = new Set();
+        const accessoryBrandOptions = new Set();
+        const accessoryModelOptions = new Set();
+
+        const phonesAndTabletsQuerySnapshot = await getDocs(phonesAndTabletsCollection);
+        phonesAndTabletsQuerySnapshot.forEach((doc) => {
+          const data = doc.data();
+          brandOptions.add(data.brand);
+          modelOptions.add(data.model);
+        });
+
+        const accessoriesQuerySnapshot = await getDocs(accessoriesCollection);
+        accessoriesQuerySnapshot.forEach((doc) => {
+          const data = doc.data();
+          accessoryBrandOptions.add(data.brand);
+          accessoryModelOptions.add(data.model);
+        });
+
+        this.brandOptions = Array.from(brandOptions);
+        this.modelOptions = Array.from(modelOptions);
+        this.accessoryBrandOptions = Array.from(accessoryBrandOptions);
+        this.accessoryModelOptions = Array.from(accessoryModelOptions);
+      } catch (error) {
+        console.error('Error fetching brand and model options:', error);
+      }
+    },
+    filterModelOptions(brand) {
+      const db = getFirestore();
+      const phonesAndTabletsCollection = collection(db, 'PhonesAndTablets');
+      const modelOptions = new Set();
+
+      const q = query(phonesAndTabletsCollection, where('brand', '==', brand));
+      getDocs(q)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            modelOptions.add(data.model);
+          });
+          this.modelOptions = Array.from(modelOptions);
+        })
+        .catch((error) => {
+          console.error('Error filtering model options:', error);
+        });
+    },
+    filterAccessoryModelOptions(brand) {
+      const db = getFirestore();
+      const accessoriesCollection = collection(db, 'Accessories');
+      const accessoryModelOptions = new Set();
+
+      const q = query(accessoriesCollection, where('brand', '==', brand));
+      getDocs(q)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            accessoryModelOptions.add(data.model);
+          });
+          this.accessoryModelOptions = Array.from(accessoryModelOptions);
+        })
+        .catch((error) => {
+          console.error('Error filtering accessory model options:', error);
+        });
+    },
+  },
+  watch: {
+    'buyPhoneTablet.brand'(newBrand) {
+      this.filterModelOptions(newBrand);
+    },
+    'buyAccessory.brand'(newBrand) {
+      this.filterAccessoryModelOptions(newBrand);
     },
   },
 };

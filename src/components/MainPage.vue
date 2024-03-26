@@ -1,15 +1,15 @@
 <template>
   <div class="main-container">
     <v-container>
-      <v-row align="center" justify="center" class="header">
-        <v-col cols="12" sm="6" md="4" lg="3">
-          <v-btn @click="signOut" rounded="lg" size="large">Sign Out</v-btn>
+      <v-row class="header">
+        <v-col align="center" cols="12" sm="6" md="4" lg="4">
+          <v-btn @click="toggleRepairs" rounded="lg" size="x-large">{{ showRepairs ? 'Repairs' : 'Repairs' }}</v-btn>
         </v-col>
-        <v-col cols="12" sm="6" md="4" lg="3">
-          <v-btn @click="toggleRepairs" rounded="lg" size="large">{{ showRepairs ? 'Repairs' : 'Repairs' }}</v-btn>
+        <v-col align="center" cols="12" sm="6" md="4" lg="4">
+          <v-btn @click="toggleBuyAndSell" rounded="lg" size="x-large">{{ showBuyAndSell ? 'Buy and Sell' : 'Buy and Sell' }}</v-btn>
         </v-col>
-        <v-col cols="12" sm="6" md="4" lg="3">
-          <v-btn @click="toggleBuyAndSell" rounded="lg" size="large">{{ showBuyAndSell ? 'Buy and Sell' : 'Buy and Sell' }}</v-btn>
+        <v-col align="center" cols="12" sm="6" md="4" lg="4">
+          <v-btn @click="signOut" rounded="lg" size="x-large">Sign Out</v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -123,4 +123,6 @@ export default {
     height: 200px; /* Adjust the height for larger screens */
   }
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
 </style>
