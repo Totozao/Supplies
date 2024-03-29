@@ -2,7 +2,7 @@
   <v-form @submit.prevent="addRepair">
     <v-card>
       <v-card-title>
-        <span class="text-h5">Add Repair</span>
+        Add Repair
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -13,6 +13,7 @@
                 v-model="newRepair.brand"
                 :items="brandOptions"
                 required
+                variant="outlined"
               ></v-combobox>
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -21,6 +22,7 @@
                 v-model="newRepair.model"
                 :items="filteredModelOptions"
                 required
+                variant="outlined"
               ></v-combobox>
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -29,14 +31,16 @@
                 v-model="newRepair.issue"
                 :items="issueOptions"
                 required
+                variant="outlined"
               ></v-combobox>
             </v-col>
-            <v-col cols="12" sm="6" md="4">
+            <v-col cols="12" sm="6" md="4" lg="4">
               <v-select
                 label="Customer Type"
                 v-model="newRepair.customerType"
                 :items="['Retail', 'Wholesale']"
                 required
+                variant="outlined"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="6" md="4" v-if="newRepair.customerType === 'Wholesale'">
@@ -44,14 +48,16 @@
                 label="Wholesale Customer Name"
                 v-model="newRepair.wholesaleCustomerName"
                 type="text"
+                variant="outlined"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" md="4">
               <v-select
                 label="Status"
                 v-model="newRepair.status"
-                :items="['In Progress', 'Just Got', 'Done', 'Failed']"
+                :items="['In Progress', 'Done', 'Failed']"
                 required
+                variant="outlined"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="6" md="4" v-for="field in fields" :key="field.name">
@@ -61,6 +67,7 @@
                 v-model="newRepair[field.name]"
                 :type="field.type"
                 required
+                variant="outlined"
               ></v-text-field>
               <v-text-field
                 v-else-if="field.name === 'date'"
@@ -68,22 +75,25 @@
                 v-model="newRepair[field.name]"
                 :type="field.type"
                 required
+                variant="outlined"
               ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="4" md="4" lg="12" >
               <v-text-field
-                v-else
-                :label="field.label"
+                label="Profit"
                 :value="profit"
                 type="number"
                 readonly
+                variant="outlined"
               ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
       </v-card-text>
       <v-card-actions>
+        <v-btn text @click="closeForm" variant="flat">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="closeForm">Cancel</v-btn>
-        <v-btn color="blue darken-1" text type="submit">Add</v-btn>
+        <v-btn text type="submit" variant="flat">Add</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>
@@ -141,7 +151,17 @@ export default {
     addRepair() {
       const newRepair = {
         ...this.newRepair,
-        profit: this.profit
+        profit: this.profit,
+        brand: this.newRepair.brand || '-',
+        model: this.newRepair.model || '-',
+        issue: this.newRepair.issue || '-',
+        imei: this.newRepair.imei || '-',
+        date: this.newRepair.date || '-',
+        fullPrice: this.newRepair.fullPrice || '-',
+        costPrice: this.newRepair.costPrice || '-',
+        customerType: this.newRepair.customerType || '-',
+        wholesaleCustomerName: this.newRepair.wholesaleCustomerName || '-',
+        status: this.newRepair.status || '-'
       };
       this.$emit('add-repair', newRepair);
     },
@@ -153,23 +173,13 @@ export default {
 </script>
   
   <style scoped>
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .v-card {
+    background-color:  #D3D3D3;
+    border-radius: 1%;
   }
-  
-  .modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 4px;
-    max-width: 400px;
-    width: 100%;
+
+  .v-card-title {
+    font-size:x-large;
+    margin: 1%
   }
   </style>

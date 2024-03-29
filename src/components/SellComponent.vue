@@ -6,7 +6,7 @@
             <v-toolbar flat>
               <v-toolbar-title>Sell - Phones and Tablets</v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="openSellPhoneTabletDialog">Add</v-btn>
+              <v-btn color="primary" @click="openSellPhoneTabletDialog" rounded="lg">Add</v-btn>
             </v-toolbar>
           </template>
           <template v-slot:[`item.quantity`]="{ item }">
@@ -19,7 +19,7 @@
             <v-toolbar flat>
               <v-toolbar-title>Sell - Accessories</v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="openSellAccessoryDialog">Add</v-btn>
+              <v-btn color="primary" @click="openSellAccessoryDialog" rounded="lg">Add</v-btn>
             </v-toolbar>
           </template>
           <template v-slot:[`item.quantity`]="{ item }">
@@ -28,7 +28,7 @@
         </v-data-table>
       </v-container>
 
-      <v-btn color="primary" @click="saveSellItems">Save</v-btn>
+      <v-btn color="primary" @click="saveSellItems" rounded="lg">Save</v-btn>
   
       <v-dialog v-model="sellPhoneTabletDialog" max-width="500px">
         <v-card>
@@ -302,3 +302,9 @@
     },
   };
   </script>
+
+<style scoped>
+  .v-btn {
+    margin-left: 1%
+  }
+</style>

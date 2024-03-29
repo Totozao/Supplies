@@ -9,5 +9,15 @@ export default {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap')
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #C0C0C0;
+}
+
+#app {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #C0C0C0;
+}
 </style>

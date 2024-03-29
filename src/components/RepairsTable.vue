@@ -3,10 +3,7 @@
     <div v-if="showTable">
       <h3>Repairs</h3>
       <div class="search-container">
-        <v-btn icon @click="toggleSearchForm">
-          <v-icon>{{ showSearchForm ? 'mdi-close' : 'mdi-magnify' }}</v-icon>
-        </v-btn>
-        <div v-if="showSearchForm" class="search-bar">
+        <div class="search-bar">
           <input type="text" v-model="searchTerm" placeholder="Search repairs..." class="search-input" />
         </div>
       </div>
@@ -21,6 +18,7 @@
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn @click="editRepair(item)">Edit</v-btn>
+          <v-btn @click="deleteRepair(item)">Delete</v-btn>
         </template>
         <template v-slot:[`item.customerType`]="{ item }">
           {{ item.data.customerType }}
@@ -29,10 +27,12 @@
           {{ item.data.wholesaleCustomerName || '-' }}
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          {{ item.data.status }}
+          <span :class="getStatusClass(item.data.status)">
+            {{ item.data.status || '-' }}
+          </span>
         </template>
       </v-data-table>
-      <v-btn @click="showAddForm = true">Add Repair</v-btn>
+      <v-btn @click="showAddForm = true" class="AddRepair" rounded="lg">Add Repair</v-btn>
     </div>
 
     <v-dialog v-model="showEditForm" max-width="500px">
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { getFirestore, doc, updateDoc, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, collection, addDoc, deleteDoc } from 'firebase/firestore';
 import { format } from "date-fns";
 import EditRepairForm from './EditRepairForm.vue';
 import AddRepairForm from './AddRepairForm.vue';
@@ -80,24 +80,26 @@ export default {
     return {
       sortBy: [{ key: 'data.brand', order: 'asc' }],
       headers: [
-        { title: 'Brand', key: 'data.brand' },
-        { title: 'Model', key: 'data.model' },
-        { title: 'Issue', key: 'data.issue' },
-        { title: 'IMEI', key: 'data.imei' },
-        { title: 'Date', key: 'data.date' },
-        { title: 'Full Price', key: 'data.fullPrice' },
-        { title: 'Cost Price', key: 'data.costPrice' },
-        { title: 'Profit', key: 'data.profit' },
-        { title: 'Customer Type', key: 'data.customerType' },
-        { title: 'Wholesale Customer', key: 'data.wholesaleCustomerName' },
-        { title: 'Status', key: 'data.status' },
-        { title: 'Actions', key: 'actions', sortable: false },
+        { title: 'Brand', key: 'data.brand', align: 'center' },
+        { title: 'Model', key: 'data.model', align: 'center' },
+        { title: 'Issue', key: 'data.issue', align: 'center' },
+        { title: 'IMEI', key: 'data.imei', align: 'center' },
+        { title: 'Date', key: 'data.date', align: 'center' },
+        { title: 'Full Price', key: 'data.fullPrice', align: 'center' },
+        { title: 'Cost Price', key: 'data.costPrice', align: 'center' },
+        { title: 'Profit', key: 'data.profit', align: 'center' },
+        { title: 'Customer Type', key: 'data.customerType', align: 'center' },
+        { title: 'Wholesale Customer', key: 'data.wholesaleCustomerName', align: 'center' },
+        { title: 'Status', key: 'data.status', align: 'center' },
+        { title: 'Date Of Finish', key: 'data.dateOfFinish', align: 'center'},
+        { title: 'Actions', key: 'actions', sortable: false, align: 'center' },
       ],
       searchTerm: '',
       showSearchForm: false,
       showEditForm: false,
       selectedRepair: null,
-      showAddForm: false
+      showAddForm: false,
+      align: 'center',
     }
   },
   computed: {
@@ -121,6 +123,11 @@ export default {
       this.selectedRepair = null;
       this.showEditForm = false;
     },
+    async deleteRepair(repair) {
+      const db = getFirestore();
+      const repairRef = doc(db, 'Repairs', repair.id);
+      await deleteDoc(repairRef);
+    },
     closeEditForm() {
       this.showEditForm = false;
       this.selectedRepair = null;
@@ -134,13 +141,20 @@ export default {
     closeAddForm() {
       this.showAddForm = false;
     },
-    toggleSearchForm() {
-      this.showSearchForm = !this.showSearchForm;
-    },
     formatDate(date) {
       const formattedDate = format(date, 'dd.MM.yyyy');
       return formattedDate;
-    }
+    },
+    getStatusClass(status) {
+      if (status === 'In Progress') {
+        return 'status-in-progress';
+      } else if (status === 'Done') {
+        return 'status-done';
+      } else if (status === 'Failed') {
+        return 'status-failed';
+      }
+      return '';
+    },
   }
 }
 </script>
@@ -167,11 +181,10 @@ th {
 .search-container {
   margin-bottom: 10px;
   display: flex;
-  align-items: center;
 }
 
 .search-bar {
-  margin-left: 10px;
+  margin-top: 10px;
 }
 
 .search-bar input {
@@ -182,14 +195,42 @@ th {
 
 .search-input {
   width: 100%;
-  padding: 8px;
   font-size: 16px;
   border: 2px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
   outline: none;
+  
 }
 
 .search-input:focus {
   border-color: #888;
+}
+
+.status-in-progress {
+  color: #ffd700;
+  border: 1px solid #ffd700;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.status-done {
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.status-failed {
+  color: #ff0000;
+  border: 1px solid #ff0000;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.v-btn {
+  margin-right: 3%;
+}
+
+.AddRepair {
+  margin-top: 8px;
 }
 </style>

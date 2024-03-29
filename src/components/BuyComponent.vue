@@ -367,3 +367,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.v-data-table {
+  margin-top: 1%;
+}
+</style>

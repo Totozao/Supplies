@@ -66,9 +66,16 @@
               <v-select
                 label="Status"
                 v-model="editedRepair.status"
-                :items="['In Progress', 'Just Got', 'Done', 'Failed']"
+                :items="['In Progress', 'Done', 'Failed']"
                 required
               ></v-select>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <v-text-field
+                label="Date of Finish"
+                v-model="editedRepair.dateOfFinish"
+                type="date"
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -100,13 +107,15 @@ export default {
       editedRepair: { ...this.repair.data,
         customerType: this.repair.data.customerType,
         wholesaleCustomerName: this.repair.data.wholesaleCustomerName,
-        status: this.repair.data.status },
+        status: this.repair.data.status,
+        dateOfFinish: this.repair.data.dateOfFinish },
       fields: [
         { name: 'imei', label: 'IMEI', type: 'text' },
         { name: 'date', label: 'Date', type: 'date' },
         { name: 'fullPrice', label: 'Full Price', type: 'number' },
         { name: 'costPrice', label: 'Cost Price', type: 'number' },
-        { name: 'profit', label: 'Profit', type: 'number' }
+        { name: 'profit', label: 'Profit', type: 'number' },
+        { name: 'dateOfFinish', label: 'Date of Finish', type: 'date' }
       ]
     }
   },

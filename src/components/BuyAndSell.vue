@@ -1,16 +1,18 @@
 <template>
   <div>
-    <h2>Buy and Sell</h2>
     <v-container>
+      <h3>Buy and Sell</h3>
       <v-row>
         <v-col cols="12" sm="4" lg="3">
-          <v-btn @click="showBuyTable = !showBuyTable" rounded="lg" size="large" block>Buy</v-btn>
+          <v-btn @click="showBuyTable = !showBuyTable" rounded="lg" size="x-large" block>Buy</v-btn>
         </v-col>
+        <v-spacer></v-spacer>
         <v-col cols="12" sm="4" lg="3">
-          <v-btn @click="showSellTable = !showSellTable" rounded="lg" size="large" block>Sell</v-btn>
+          <v-btn @click="showSellTable = !showSellTable" rounded="lg" size="x-large" block>Sell</v-btn>
         </v-col>
+        <v-spacer></v-spacer>
         <v-col cols="12" sm="4" lg="3">
-          <v-btn @click="showInfo = !showInfo" rounded="lg" size="large" block>Info</v-btn>
+          <v-btn @click="showInfo = !showInfo" rounded="lg" size="x-large" block>Info</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -42,3 +44,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.v-btn {
+  margin:auto;
+  margin-top:1.5%
+}
+
+</style>

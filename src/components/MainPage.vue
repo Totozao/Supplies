@@ -108,7 +108,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .main-container {
   min-height: 100vh;
   padding: 20px;
@@ -124,5 +124,24 @@ export default {
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
+.v-btn {
+  font-weight: bold;
+}
+</style>
+
+<style>
+.v-btn {
+  background-color: #ADD8E6;
+  color: #404040;
+}
+
+.v-data-table {
+  background-color: #D3D3D3;
+  border-radius: 10px;
+}
+
+.v-toolbar {
+  background-color: #cccaca;
+  border-radius: 10px;
+}
 </style>
