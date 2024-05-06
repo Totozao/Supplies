@@ -13,11 +13,11 @@ export default {
 
 html, body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #C0C0C0;
+  background-color: #d1cece;
 }
 
 #app {
   font-family: 'Montserrat', sans-serif;
-  background-color: #C0C0C0;
+  background-color: #ece9e9;
 }
 </style>

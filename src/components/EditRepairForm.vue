@@ -2,7 +2,7 @@
   <v-form @submit.prevent="updateRepair">
     <v-card>
       <v-card-title>
-        <span class="text-h5">Edit Repair</span>
+        Edit Repair
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -13,6 +13,7 @@
                 v-model="editedRepair.brand"
                 :items="brandOptions"
                 required
+                variant="outlined"
               ></v-combobox>
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -21,6 +22,7 @@
                 v-model="editedRepair.model"
                 :items="filteredModelOptions"
                 required
+                variant="outlined"
               ></v-combobox>
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -29,6 +31,7 @@
                 v-model="editedRepair.issue"
                 :items="issueOptions"
                 required
+                variant="outlined"
               ></v-combobox>
             </v-col>
             <v-col cols="12" sm="6" md="4" v-for="field in fields" :key="field.name">
@@ -38,6 +41,7 @@
                 v-model="editedRepair[field.name]"
                 :type="field.type"
                 required
+                variant="outlined"
               ></v-text-field>
               <v-text-field
                 v-else
@@ -45,6 +49,7 @@
                 :value="profit"
                 type="number"
                 readonly
+                variant="outlined"
               ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6" md="4">
@@ -53,6 +58,7 @@
                 v-model="editedRepair.customerType"
                 :items="['Retail', 'Wholesale']"
                 required
+                variant="outlined"
               ></v-select>
             </v-col>
             <v-col cols="12" sm="6" md="4" v-if="editedRepair.customerType === 'Wholesale'">
@@ -62,20 +68,15 @@
                 type="text"
               ></v-text-field>
             </v-col>
+            <v-spacer></v-spacer>
             <v-col cols="12" sm="6" md="4">
               <v-select
                 label="Status"
                 v-model="editedRepair.status"
                 :items="['In Progress', 'Done', 'Failed']"
                 required
+                variant="outlined"
               ></v-select>
-            </v-col>
-            <v-col cols="12" sm="6" md="4">
-              <v-text-field
-                label="Date of Finish"
-                v-model="editedRepair.dateOfFinish"
-                type="date"
-              ></v-text-field>
             </v-col>
           </v-row>
         </v-container>
@@ -159,25 +160,9 @@ export default {
   }
 }
 </script>
-  
-  <style scoped>
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 4px;
-    max-width: 400px;
-    width: 100%;
-  }
-  </style>
+
+<style scoped>
+.v-card-title {
+  margin-left: 5%;
+}
+</style>

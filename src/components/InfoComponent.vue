@@ -3,7 +3,7 @@
     <v-data-table :headers="phonesAndTabletsHeaders" :items="phonesAndTablets" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Phones and Tablets</v-toolbar-title>
+          <v-toolbar-title>Info - Phones and Tablets</v-toolbar-title>
         </v-toolbar>
       </template>
     </v-data-table>
@@ -11,7 +11,7 @@
     <v-data-table :headers="accessoriesHeaders" :items="accessories" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Accessories</v-toolbar-title>
+          <v-toolbar-title>Info - Accessories</v-toolbar-title>
         </v-toolbar>
       </template>
     </v-data-table>
@@ -26,21 +26,22 @@ export default {
   data() {
     return {
       phonesAndTabletsHeaders: [
-        { title: 'Brand', value: 'brand' },
-        { title: 'Model', value: 'model' },
-        { title: 'Memory', value: 'memory' },
-        { title: 'RAM', value: 'ram' },
-        { title: 'Color', value: 'color' },
-        { title: 'Cost', value: 'cost' },
-        { title: 'Quantity', value: 'quantity' },
+        { title: 'Brand', value: 'brand', align: 'center' },
+        { title: 'Model', value: 'model', align: 'center' },
+        { title: 'Memory', value: 'memory', align: 'center' },
+        { title: 'RAM', value: 'ram', align: 'center' },
+        { title: 'Color', value: 'color', align: 'center' },
+        { title: 'Cost', value: 'cost', align: 'center' },
+        { title: 'Quantity', value: 'quantity', align: 'center' },
+        { title: 'IMEI/SN', value: 'imei', align: 'center' },
       ],
       phonesAndTablets: [],
       accessoriesHeaders: [
-        { title: 'Category', value: 'category' },
-        { title: 'Brand', value: 'brand' },
-        { title: 'Model', value: 'model' },
-        { title: 'Cost', value: 'cost' },
-        { title: 'Quantity', value: 'quantity' },
+        { title: 'Category', value: 'category', align: 'center' },
+        { title: 'Brand', value: 'brand', align: 'center' },
+        { title: 'Model', value: 'model', align: 'center' },
+        { title: 'Cost', value: 'cost', align: 'center' },
+        { title: 'Quantity', value: 'quantity', align: 'center' },
       ],
       accessories: [],
     };
@@ -69,5 +70,7 @@ export default {
 <style scoped>
   .v-data-table {
     margin-top: 1%;
+    margin-left: 0.7%;
   }
+  
 </style>

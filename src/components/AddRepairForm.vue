@@ -177,9 +177,4 @@ export default {
     background-color:  #D3D3D3;
     border-radius: 1%;
   }
-
-  .v-card-title {
-    font-size:x-large;
-    margin: 1%
-  }
   </style>

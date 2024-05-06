@@ -136,12 +136,18 @@ export default {
 }
 
 .v-data-table {
-  background-color: #D3D3D3;
+  background-color: #e7e2e2;
   border-radius: 10px;
 }
 
 .v-toolbar {
   background-color: #cccaca;
   border-radius: 10px;
+}
+
+.v-card-title {
+  margin-left: 2%;
+  margin-top: 4%;
+  font-size:1.5em
 }
 </style>

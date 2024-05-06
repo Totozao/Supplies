@@ -1,11 +1,15 @@
 <template>
   <div>
     <div v-if="showTable">
-      <h3>Repairs</h3>
+      <h2>Repairs</h2>
       <div class="search-container">
-        <div class="search-bar">
-          <input type="text" v-model="searchTerm" placeholder="Search repairs..." class="search-input" />
-        </div>
+        <v-row>
+          <v-col cols="12" sm="6" md="4" lg="2">
+            <v-text-field v-model="searchTerm" placeholder="Search repairs..." variant="outlined"/>
+            <v-spacer></v-spacer>
+            <v-btn @click="showAddForm = true" rounded="lg" class="addRepairBtn">Add Repair</v-btn>
+          </v-col>
+        </v-row>
       </div>
       <v-data-table
         :headers="headers"
@@ -17,8 +21,12 @@
           {{ formatDate(item.date) }}
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn @click="editRepair(item)">Edit</v-btn>
-          <v-btn @click="deleteRepair(item)">Delete</v-btn>
+          <v-btn @click="editRepair(item)" rounded="lg">
+            <v-icon> {{"mdi-pencil"}} </v-icon>  
+          </v-btn>
+          <v-btn @click="deleteRepair(item)" rounded="lg">
+            <v-icon> {{"mdi-close"}} </v-icon>
+          </v-btn>
         </template>
         <template v-slot:[`item.customerType`]="{ item }">
           {{ item.data.customerType }}
@@ -32,7 +40,6 @@
           </span>
         </template>
       </v-data-table>
-      <v-btn @click="showAddForm = true" class="AddRepair" rounded="lg">Add Repair</v-btn>
     </div>
 
     <v-dialog v-model="showEditForm" max-width="500px">
@@ -99,7 +106,6 @@ export default {
       showEditForm: false,
       selectedRepair: null,
       showAddForm: false,
-      align: 'center',
     }
   },
   computed: {
@@ -160,50 +166,23 @@ export default {
 </script>
 
 <style scoped>
-v-btn {
-  padding: 100px
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
 .search-container {
-  margin-bottom: 10px;
   display: flex;
 }
 
 .search-bar {
-  margin-top: 10px;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 8px;
-  font-size: 16px;
-}
-
-.search-input {
-  width: 100%;
-  font-size: 16px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  outline: none;
   
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .search-input:focus {
   border-color: #888;
+}
+
+.v-text-field {
+  width:150%
 }
 
 .status-in-progress {
@@ -230,7 +209,12 @@ th {
   margin-right: 3%;
 }
 
-.AddRepair {
-  margin-top: 8px;
+.addRepairBtn{
+  margin-left:1%
+}
+
+.v-text-field {
+  flex: 1;
+  margin-right: 10px;
 }
 </style>
