@@ -3,7 +3,6 @@ import App from './App.vue';
 import router from './router';
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
-import i18n from './i18n'
 
 // Import Firebase App module
 import firebase from 'firebase/compat/app';
